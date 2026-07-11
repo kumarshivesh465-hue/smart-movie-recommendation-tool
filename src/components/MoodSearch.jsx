@@ -1,27 +1,12 @@
 import { useState } from 'react';
 
-export default function MoodSearch({ onResults }) {
+export default function MoodSearch({ onSubmit, loading }) {
   const [prompt, setPrompt] = useState('');
-  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!prompt.trim()) return;
-
-    setLoading(true);
-    try {
-      const response = await fetch('/api/mood-search', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: prompt.trim() }),
-      });
-      const data = await response.json();
-      onResults(data.movies || [], data.interpretation);
-    } catch (err) {
-      onResults([], null);
-    } finally {
-      setLoading(false);
-    }
+    onSubmit(prompt.trim());
   };
 
   return (
@@ -31,7 +16,7 @@ export default function MoodSearch({ onResults }) {
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
         placeholder='Try: "I want a feel-good sci-fi movie"'
-        className="flex-1 px-4 py-3 rounded-lg bg-neutral-800 text-white placeholder-neutral-500 border border-neutral-700 focus:outline-none focus:border-teal-500"
+        className="flex-1 px-4 py-3 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-500 border border-neutral-300 dark:border-neutral-700 focus:outline-none focus:border-teal-500"
       />
       <button
         type="submit"
