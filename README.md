@@ -28,6 +28,13 @@ Sometimes you know the type of movie you want to watch, but not its name. I want
 
 The biggest challenge was building the mood-based search. I used Gemini to understand natural language and convert it into search filters that TMDb could use, while keeping the API key secure through a backend proxy.
 
+## Screenshots
+<img width="1900" height="923" alt="image" src="https://github.com/user-attachments/assets/6781fe56-b7b3-42f0-b580-6cdd50140a80" />
+
+<img width="1897" height="925" alt="image" src="https://github.com/user-attachments/assets/3a97bf28-6cda-4df2-8694-dfc705c86784" />
+
+<img width="1918" height="932" alt="image" src="https://github.com/user-attachments/assets/279b03af-d563-46e6-992e-c8930365884c" />
+
 ## Setup Instructions
 
 1. Clone the repository
