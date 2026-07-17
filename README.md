@@ -56,7 +56,7 @@ A responsive web application that helps users discover movies through title sear
 
 ## Live Deployment
 
-🔗 [Add your deployed Vercel link here once Day 5 is done]
+🔗 [https://smart-movie-recommendation-tool.vercel.app/]
 
 ## Author
 
