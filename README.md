@@ -1,63 +1,80 @@
 # 🎬 Smart Movie Recommendation Tool
 
-A responsive web application that helps users discover movies through title search, actor search, and mood-based natural language search powered by an LLM. Built for the Web Development Challenge.
+A responsive web application that helps users discover movies by title, actor, or even by describing the kind of movie they want to watch in natural language. Built for the Web Development Challenge.
 
-## Features Implemented
+## Why I built this
 
-- **Search by Title** — find movies by name using TMDb
-- **Search by Actor/Actress** — see a filmography sorted by popularity
-- **Mood/Natural Language Search** — describe what you want (e.g. *"I want a feel-good sci-fi movie"*) and Gemini AI interprets it into genre + keyword filters, which are then matched against TMDb
-- **Movie Detail View** — poster, rating, genre tags, cast, plot synopsis, release year
-- **Similar Movies** — recommendations shown inside the detail view, clickable to explore further
-- **Dark / Light Mode** — toggle with persistent theming across the whole app
-- **Responsive Design** — works across mobile, tablet, and desktop
-- **Loading states & error handling** across all search modes
+Sometimes you know the type of movie you want to watch, but not its name. I wanted to make searching easier by letting users find movies through simple descriptions like *"I want a feel-good sci-fi movie"* instead of only searching by title.
+
+## What it can do
+
+* **Search by Title** — Find movies by name using TMDb.
+* **Search by Actor/Actress** — Browse an actor's filmography sorted by popularity.
+* **Mood-Based Search** — Describe the kind of movie you want, and Gemini AI converts it into genres and keywords before searching TMDb.
+* **Movie Details** — View posters, ratings, genres, cast, plot, and release year.
+* **Similar Movies** — Discover related movies from the detail page.
+* **Dark & Light Mode** — Switch themes with your preference saved automatically.
+* **Responsive Design** — Works smoothly on mobile, tablet, and desktop.
+* **Loading States & Error Handling** — Provides a better user experience across all search modes.
 
 ## Tech Stack
 
-- **Frontend:** React + Vite, Tailwind CSS
-- **Backend:** Node/Express (local) — a lightweight proxy for the LLM key; deployed as Vercel Serverless Functions in production
-- **Movie Data:** [TMDb API](https://www.themoviedb.org/documentation/api)
-- **AI/LLM:** [Gemini API](https://ai.google.dev/) for mood-based natural language interpretation
+* **Frontend:** React + Vite, Tailwind CSS
+* **Backend:** Node.js + Express (local), Vercel Serverless Functions (production)
+* **Movie Data:** TMDb API
+* **AI:** Gemini API for mood-based natural language search
+
+## Challenges
+
+The biggest challenge was building the mood-based search. I used Gemini to understand natural language and convert it into search filters that TMDb could use, while keeping the API key secure through a backend proxy.
+
+## Screenshots
+<img width="1900" height="923" alt="image" src="https://github.com/user-attachments/assets/6781fe56-b7b3-42f0-b580-6cdd50140a80" />
+
+<img width="1897" height="925" alt="image" src="https://github.com/user-attachments/assets/3a97bf28-6cda-4df2-8694-dfc705c86784" />
+
+<img width="1918" height="932" alt="image" src="https://github.com/user-attachments/assets/279b03af-d563-46e6-992e-c8930365884c" />
 
 ## Setup Instructions
 
-1. **Clone the repository**
+1. Clone the repository
+
 ```bash
-   git clone https://github.com/your-username/movie-recommender.git
-   cd movie-recommender
+git clone https://github.com/your-username/movie-recommender.git
+cd movie-recommender
 ```
 
-2. **Install dependencies**
+2. Install dependencies
+
 ```bash
-   npm install
+npm install
 ```
 
-3. **Environment variables** — create a `.env` file in the root (see `.env.example`):
-- Get a TMDb token at [themoviedb.org/settings/api](https://www.themoviedb.org/settings/api) (free, no billing required)
-   - Get a Gemini key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey) (free tier)
+3. Create a `.env` file using `.env.example` and add your TMDb and Gemini API keys.
 
-4. **Run locally** (two terminals):
+4. Run the project
+
 ```bash
-   # Terminal 1 — API server (handles mood search)
-   node server.js
+# Terminal 1
+node server.js
 
-   # Terminal 2 — frontend dev server
-   npm run dev
+# Terminal 2
+npm run dev
 ```
-   Open `http://localhost:5173`
+
+Open **http://localhost:5173**
 
 ## APIs Used
 
-| API | Purpose |
-|---|---|
-| TMDb (`/search/movie`, `/search/person`, `/movie/{id}`, `/discover/movie`) | Movie search, cast/crew, details, filtered discovery |
-| Gemini (`gemini-flash-latest`) | Natural language mood interpretation → structured search parameters |
+| API        | Purpose                                                    |
+| ---------- | ---------------------------------------------------------- |
+| TMDb API   | Movie search, actor search, movie details, recommendations |
+| Gemini API | Converts natural language into searchable movie filters    |
 
-## Live Deployment
+## Live Demo
 
-🔗 [Add your deployed Vercel link here once Day 5 is done]
+🔗 https://smart-movie-recommendation-tool.vercel.app/
 
 ## Author
 
-Shivesh Kumar
+**Shivesh Kumar**
