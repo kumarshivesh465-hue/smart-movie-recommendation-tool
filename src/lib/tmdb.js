@@ -34,9 +34,12 @@ export function getMoviesByPerson(personId) {
 export function getMovieDetails(movieId) {
   return tmdbFetch(`/movie/${movieId}`, { append_to_response: 'credits,similar' });
 }
-
+export function getTrendingMovies() {
+  return tmdbFetch('/trending/movie/week');
+}
 export function discoverMovies(params = {}) {
   return tmdbFetch('/discover/movie', params);
 }
+
 
 export const IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';

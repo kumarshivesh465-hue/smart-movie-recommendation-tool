@@ -4,7 +4,7 @@ import MoodSearch from './components/MoodSearch';
 import MovieCard from './components/MovieCard';
 import MovieDetail from './components/MovieDetail';
 import SearchHistory from './components/SearchHistory';
-import { searchMovies, searchPeople, getMoviesByPerson } from './lib/tmdb';
+import { searchMovies, searchPeople, getMoviesByPerson, getTrendingMovies } from './lib/tmdb';
 import { getFavorites, getSearchHistory, addSearchHistory, clearSearchHistory } from './lib/storage';
 import { useTheme } from './context/ThemeContext';
 
@@ -18,6 +18,8 @@ function App() {
   const [selectedMovieId, setSelectedMovieId] = useState(null);
   const [moodInterpretation, setMoodInterpretation] = useState(null);
   const [history, setHistory] = useState(() => getSearchHistory());
+  const [trending, setTrending] = useState([]);
+  const [trendingLoading, setTrendingLoading] = useState(true);
 
   useEffect(() => {
     if (mode === 'favorites') {
@@ -27,6 +29,13 @@ function App() {
       setMoodInterpretation(null);
     }
   }, [mode]);
+
+  useEffect(() => {
+    getTrendingMovies()
+      .then((data) => setTrending(data.results || []))
+      .catch(() => setTrending([]))
+      .finally(() => setTrendingLoading(false));
+  }, []);
 
   const handleSearch = async (query, overrideMode) => {
     const activeMode = overrideMode || mode;
@@ -168,8 +177,12 @@ function App() {
           </p>
         )}
 
+        {!hasSearched && !trendingLoading && trending.length > 0 && (
+          <h2 className="text-xl font-semibold mb-4 text-center">🔥 Trending This Week</h2>
+        )}
+
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {movies.map((movie) => (
+          {(hasSearched ? movies : trending).map((movie) => (
             <MovieCard
               key={movie.id}
               movie={movie}
