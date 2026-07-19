@@ -1,80 +1,304 @@
 # 🎬 Smart Movie Recommendation Tool
 
-A responsive web application that helps users discover movies by title, actor, or even by describing the kind of movie they want to watch in natural language. Built for the Web Development Challenge.
+A modern, AI-powered movie discovery platform that helps users find movies by title, actor, or natural language descriptions. Instead of searching only by exact movie names, users can simply describe what they want to watch (e.g., *"a feel-good sci-fi adventure"*), and the application intelligently recommends matching movies.
 
-## Why I built this
+Built as part of the **Web Development Challenge**.
 
-Sometimes you know the type of movie you want to watch, but not its name. I wanted to make searching easier by letting users find movies through simple descriptions like *"I want a feel-good sci-fi movie"* instead of only searching by title.
+---
 
-## What it can do
+# ✨ Overview
 
-* **Search by Title** — Find movies by name using TMDb.
-* **Search by Actor/Actress** — Browse an actor's filmography sorted by popularity.
-* **Mood-Based Search** — Describe the kind of movie you want, and Gemini AI converts it into genres and keywords before searching TMDb.
-* **Movie Details** — View posters, ratings, genres, cast, plot, and release year.
-* **Similar Movies** — Discover related movies from the detail page.
-* **Dark & Light Mode** — Switch themes with your preference saved automatically.
-* **Responsive Design** — Works smoothly on mobile, tablet, and desktop.
-* **Loading States & Error Handling** — Provides a better user experience across all search modes.
+Finding the perfect movie isn't always easy—sometimes you know the mood you're in but not the movie's title.
 
-## Tech Stack
+This project combines the **TMDb API** with **Google Gemini AI** to create a smarter search experience. Gemini interprets natural language prompts into structured movie genres and keywords, allowing TMDb to return highly relevant recommendations.
 
-* **Frontend:** React + Vite, Tailwind CSS
-* **Backend:** Node.js + Express (local), Vercel Serverless Functions (production)
-* **Movie Data:** TMDb API
-* **AI:** Gemini API for mood-based natural language search
+The result is a faster, more intuitive way to discover movies.
 
-## Challenges
+---
 
-The biggest challenge was building the mood-based search. I used Gemini to understand natural language and convert it into search filters that TMDb could use, while keeping the API key secure through a backend proxy.
+# 🚀 Features
+
+### 🔍 Multiple Search Methods
+- Search movies by **title**
+- Search movies by **actor or actress**
+- Search using **natural language** (AI-powered mood search)
+
+### 🤖 AI-Powered Mood Search
+Describe the type of movie you want, for example:
+
+> *"A motivational sports movie based on a true story"*
+
+Gemini AI analyzes the prompt, extracts genres and relevant keywords, and converts it into optimized search parameters before querying TMDb.
+
+---
+
+### 📈 Trending Movies
+- View the latest trending movies immediately on the home page
+- Updated using TMDb's weekly trending endpoint
+
+---
+
+### ⚡ Live Search
+- Instant search results while typing
+- Debounced requests to reduce unnecessary API calls
+- No need to press Enter
+
+---
+
+### 🎭 Genre Filters
+Quickly narrow results using interactive genre chips.
+
+Examples:
+- Action
+- Comedy
+- Thriller
+- Horror
+- Romance
+- Science Fiction
+
+---
+
+### 🎬 Detailed Movie Information
+
+Each movie page displays:
+
+- Poster
+- Rating
+- Runtime
+- Genres
+- Release Date
+- Overview
+- Cast
+- Production information
+
+---
+
+### 🎥 Similar Movie Recommendations
+
+After opening a movie, users automatically receive recommendations for similar movies.
+
+---
+
+### ❤️ Favorites
+
+Save favorite movies locally and access them anytime.
+
+Features include:
+
+- Persistent storage
+- One-click add/remove
+- Automatically restored on future visits
+
+---
+
+### 🕒 Search History
+
+Recent searches are stored locally, allowing users to quickly revisit previous searches.
+
+---
+
+### 🌙 Dark & Light Theme
+
+- Toggle between dark and light mode
+- Theme preference is saved automatically
+
+---
+
+### 📱 Fully Responsive Design
+
+Optimized for:
+
+- Desktop
+- Laptop
+- Tablet
+- Mobile devices
+
+---
+
+### 🎨 Better User Experience
+
+Includes several UI improvements such as:
+
+- Skeleton loading cards
+- Empty-state illustrations
+- Error handling
+- Smooth transitions
+- Responsive layouts
+
+---
+
+# 🛠 Tech Stack
+
+### Frontend
+- React
+- Vite
+- Tailwind CSS
+
+### Backend
+- Node.js
+- Express.js (Development)
+- Vercel Serverless Functions (Production)
+
+### APIs
+- TMDb API
+- Google Gemini API
 
 ## Screenshots
+<img width="1896" height="927" alt="image" src="https://github.com/user-attachments/assets/e7028173-c4cd-45ce-ae77-96c7218abe27" />
+
+<img width="1897" height="928" alt="image" src="https://github.com/user-attachments/assets/b6f17a73-9773-4879-9b0d-b1d3acf9164c" />
+
 <img width="1900" height="923" alt="image" src="https://github.com/user-attachments/assets/6781fe56-b7b3-42f0-b580-6cdd50140a80" />
 
 <img width="1897" height="925" alt="image" src="https://github.com/user-attachments/assets/3a97bf28-6cda-4df2-8694-dfc705c86784" />
 
 <img width="1918" height="932" alt="image" src="https://github.com/user-attachments/assets/279b03af-d563-46e6-992e-c8930365884c" />
 
-## Setup Instructions
+---
 
-1. Clone the repository
+# 🧠 How AI Search Works
 
-```bash
-git clone https://github.com/your-username/movie-recommender.git
-cd movie-recommender
+The mood-based recommendation system follows this workflow:
+
+```
+User Prompt
+      ↓
+Gemini AI
+      ↓
+Extract Genres + Keywords
+      ↓
+Backend Validation
+      ↓
+TMDb API Search
+      ↓
+Relevant Movie Recommendations
 ```
 
-2. Install dependencies
+For example:
+
+```
+Input:
+"I want a funny action movie with superheroes."
+
+Gemini Output:
+Genres:
+- Action
+- Comedy
+
+Keywords:
+- Superhero
+- Adventure
+
+TMDb Search
+↓
+
+Recommended Movies
+```
+
+This allows users to search naturally instead of remembering exact movie titles.
+
+---
+
+# ⚙ Challenges
+
+One of the biggest challenges was implementing the AI-powered mood search.
+
+Natural language is often ambiguous, so the application needed to reliably convert user descriptions into structured movie genres and searchable keywords before querying TMDb.
+
+Another challenge involved managing changes to Google's Gemini models during development:
+
+- `gemini-2.0-flash` eventually hit quota limitations.
+- `gemini-2.5-flash` was later deprecated.
+- The project was migrated to `gemini-flash-latest`, an auto-updating alias that automatically points to Google's newest supported Flash model, reducing future maintenance.
+
+Security was also an important consideration. API keys are never exposed to the client; all AI requests are routed through a secure backend proxy.
+
+---
+
+# 📦 Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/kumarshivesh465-hue/smart-movie-recommendation-tool.git
+
+cd smart-movie-recommendation-tool
+```
+
+---
+
+### 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-3. Create a `.env` file using `.env.example` and add your TMDb and Gemini API keys.
+---
 
-4. Run the project
+### 3. Configure Environment Variables
+
+Create a `.env` file using the provided `.env.example`.
+
+Add:
+
+```env
+TMDB_API_KEY=your_tmdb_key
+GEMINI_API_KEY=your_gemini_key
+```
+
+---
+
+### 4. Run the Backend
 
 ```bash
-# Terminal 1
 node server.js
+```
 
-# Terminal 2
+---
+
+### 5. Start the Frontend
+
+```bash
 npm run dev
 ```
 
-Open **http://localhost:5173**
+---
 
-## APIs Used
+Open:
 
-| API        | Purpose                                                    |
-| ---------- | ---------------------------------------------------------- |
-| TMDb API   | Movie search, actor search, movie details, recommendations |
-| Gemini API | Converts natural language into searchable movie filters    |
+```
+http://localhost:5173
+```
 
-## Live Demo
+---
 
-🔗 https://smart-movie-recommendation-tool.vercel.app/
+# 🌐 APIs Used
 
-## Author
+| API | Purpose |
+|------|---------|
+| **TMDb API** | Movie search, actor search, trending movies, recommendations, movie details |
+| **Google Gemini API** | Converts natural language into structured movie genres and keywords for intelligent search |
+
+---
+
+# 🚀 Live Demo
+
+**https://smart-movie-recommendation-tool.vercel.app/**
+
+---
+
+# 💡 Future Improvements
+
+- User authentication
+- Cloud-synced favorites
+- Watchlist support
+- Streaming platform availability
+- Voice-based movie search
+- Advanced recommendation engine using user preferences
+- Personalized AI recommendations based on viewing history
+
+---
+
+# 👨‍💻 Author
 
 **Shivesh Kumar**
