@@ -8,6 +8,7 @@ import { searchMovies, searchPeople, getMoviesByPerson, getTrendingMovies } from
 import { getFavorites, getSearchHistory, addSearchHistory, clearSearchHistory } from './lib/storage';
 import { useTheme } from './context/ThemeContext';
 import SkeletonCard from './components/SkeletonCard';
+import { GENRE_MAP } from './lib/genres';
 
 function App() {
   const { theme, toggleTheme } = useTheme();
@@ -21,6 +22,7 @@ function App() {
   const [history, setHistory] = useState(() => getSearchHistory());
   const [trending, setTrending] = useState([]);
   const [trendingLoading, setTrendingLoading] = useState(true);
+  const [selectedGenre, setSelectedGenre] = useState(null);
 
   useEffect(() => {
     if (mode === 'favorites') {
@@ -28,6 +30,7 @@ function App() {
       setHasSearched(true);
       setError(null);
       setMoodInterpretation(null);
+      setSelectedGenre(null);
     }
   }, [mode]);
 
@@ -44,6 +47,7 @@ function App() {
     setError(null);
     setHasSearched(true);
     setMoodInterpretation(null);
+    setSelectedGenre(null);
     try {
       if (activeMode === 'title') {
         const data = await searchMovies(query);
@@ -75,6 +79,7 @@ function App() {
     setError(null);
     setHasSearched(true);
     setMoodInterpretation(null);
+    setSelectedGenre(null);
     try {
       const response = await fetch('/api/mood-search', {
         method: 'POST',
@@ -119,6 +124,14 @@ function App() {
     { key: 'mood', label: 'Mood Search' },
     { key: 'favorites', label: '❤️ Favorites' },
   ];
+
+  const baseList = hasSearched ? movies : trending;
+  const availableGenreIds = [...new Set(baseList.flatMap((m) => m.genre_ids || []))].filter(
+    (id) => GENRE_MAP[id]
+  );
+  const displayedMovies = selectedGenre
+    ? baseList.filter((m) => m.genre_ids?.includes(selectedGenre))
+    : baseList;
 
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-white px-4 py-10 transition-colors">
@@ -173,9 +186,14 @@ function App() {
         )}
         {error && <p className="text-center text-red-500 dark:text-red-400">{error}</p>}
         {!loading && hasSearched && movies.length === 0 && !error && (
-          <p className="text-center text-neutral-500 dark:text-neutral-400">
-            {mode === 'favorites' ? 'No favorites yet — tap the heart on any movie to save it.' : 'No movies found. Try another search.'}
-          </p>
+          <div className="text-center text-neutral-500 dark:text-neutral-400">
+            <div className="text-4xl mb-2">{mode === 'favorites' ? '💔' : '🔍'}</div>
+            <p>
+              {mode === 'favorites'
+                ? 'No favorites yet — tap the heart on any movie to save it.'
+                : 'No movies found. Try another search.'}
+            </p>
+          </div>
         )}
 
         {moodInterpretation && (
@@ -188,9 +206,37 @@ function App() {
           <h2 className="text-xl font-semibold mb-4 text-center">🔥 Trending This Week</h2>
         )}
 
+        {!loading && availableGenreIds.length > 0 && (
+          <div className="flex justify-center gap-2 mb-6 flex-wrap">
+            <button
+              onClick={() => setSelectedGenre(null)}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                selectedGenre === null
+                  ? 'bg-teal-600 text-white'
+                  : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400'
+              }`}
+            >
+              All
+            </button>
+            {availableGenreIds.map((id) => (
+              <button
+                key={id}
+                onClick={() => setSelectedGenre(id)}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                  selectedGenre === id
+                    ? 'bg-teal-600 text-white'
+                    : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400'
+                }`}
+              >
+                {GENRE_MAP[id]}
+              </button>
+            ))}
+          </div>
+        )}
+
         {!loading && (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {(hasSearched ? movies : trending).map((movie) => (
+            {displayedMovies.map((movie) => (
               <MovieCard
                 key={movie.id}
                 movie={movie}
