@@ -7,6 +7,7 @@ import SearchHistory from './components/SearchHistory';
 import { searchMovies, searchPeople, getMoviesByPerson, getTrendingMovies } from './lib/tmdb';
 import { getFavorites, getSearchHistory, addSearchHistory, clearSearchHistory } from './lib/storage';
 import { useTheme } from './context/ThemeContext';
+import SkeletonCard from './components/SkeletonCard';
 
 function App() {
   const { theme, toggleTheme } = useTheme();
@@ -163,7 +164,13 @@ function App() {
       )}
 
       <div className="mt-10 max-w-6xl mx-auto">
-        {loading && <p className="text-center text-neutral-500 dark:text-neutral-400">Loading movies...</p>}
+        {loading && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {Array.from({ length: 10 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        )}
         {error && <p className="text-center text-red-500 dark:text-red-400">{error}</p>}
         {!loading && hasSearched && movies.length === 0 && !error && (
           <p className="text-center text-neutral-500 dark:text-neutral-400">
@@ -181,16 +188,18 @@ function App() {
           <h2 className="text-xl font-semibold mb-4 text-center">🔥 Trending This Week</h2>
         )}
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {(hasSearched ? movies : trending).map((movie) => (
-            <MovieCard
-              key={movie.id}
-              movie={movie}
-              onClick={() => setSelectedMovieId(movie.id)}
-              onFavoriteToggle={handleFavoriteToggle}
-            />
-          ))}
-        </div>
+        {!loading && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {(hasSearched ? movies : trending).map((movie) => (
+              <MovieCard
+                key={movie.id}
+                movie={movie}
+                onClick={() => setSelectedMovieId(movie.id)}
+                onFavoriteToggle={handleFavoriteToggle}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {selectedMovieId && (

@@ -1,7 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function SearchBar({ onSearch, placeholder = 'Search by movie title...' }) {
   const [query, setQuery] = useState('');
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    const trimmed = query.trim();
+    if (!trimmed) return;
+
+    const timer = setTimeout(() => {
+      onSearch(trimmed);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [query]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
